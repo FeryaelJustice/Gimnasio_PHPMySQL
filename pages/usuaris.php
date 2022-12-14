@@ -2,48 +2,52 @@
     <div class="col-sm-8">
         <div class="alert alert-primary" role="alert">
             <div class="row">
-
                 <div class="col-sm-9">
                     <h2> Usuaris</h2>
                 </div>
                 <div class="col-sm-3">
-                    <button type="submit" class="btn btn-primary"><img src="./static/add.png" width="32">Afegir Usuari </button>
+                    <form method="POST" action="./pages/actions/usuari/crea_usuari.php">
+                        <input type="hidden" name="id" value="id">
+                        <button type="submit" class="btn btn-primary"><img src="./static/add.png" width="32">Afegir Usuari</button>
+                    </form>
                 </div>
             </div>
         </div>
 
         <div class="table-responsive">
-            <table id="userList" class="table table-bordered table-hover table-striped">
-                <thead class="thead-light">
+            <?php
+            $sql = "SELECT idclient, nom, llinatges, telefon FROM clients";
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+            ?>
+                <table id="userList" class="table table-bordered table-hover table-striped">
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Nom</th>
-                        <th scope="col">Llinatges</th>
-                        <th scope="col">Telefon</th>
+                        <th>ID client</th>
+                        <th>nom</th>
+                        <th>llinatges</th>
+                        <th>telefon</th>
                         <th></th>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Miquel</td>
-                        <td>Mir</td>
-                        <td>632452314</td>
+                    <?php
+                    // output data of each row
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr><td>" . $row["idclient"] . "</td><td>" . $row["nom"] . "</td><td>" . $row["llinatges"] . "</td><td>" . $row["telefon"] . "</td>";
+                    ?>
                         <td>
-                            <a href="UT3_tasca_modifica.html"><img src="./static/pencil.png" width="32"></a><a href="#">&nbsp<img src="./static/remove.png" width="32"></a>
+                            <a href="./pages/actions/usuari/modificar_usuari.php?id=<?php echo $row["idclient"] ?>"><img src="./static/pencil.png" width="32"></a>
+                            <a href="./pages/actions/usuari/elimina_usuari.php?id=<?php echo $row["idclient"] ?>"><img src="./static/remove.png" width="32"></a>
                         </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Joana</td>
-                        <td>Pons</td>
-                        <td>656998877</td>
-                        <td>
-                            <a href="#"><img src="./static/pencil.png" width="32"></a><a href="#">&nbsp<img src="./static/remove.png" width="32"></a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                        </tr>";
+                    <?php
+                    }
+                    ?>
+                </table>
+            <?php
+            } else {
+                echo "0 results";
+            }
+            ?>
         </div>
     </div>
 
