@@ -4,29 +4,34 @@ $diaErr = $horaErr = $tipusErr = $usuariErr = "";
 $dia = $hora = "";
 $tipus = $usuari = 0;
 $validForm = true;
+$validFormVacios = true;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check si estan vacios
     if (empty($_POST["dia"])) {
         $diaErr = "Dia is required";
+        $validFormVacios = false;
     } else {
         $dia = test_input($_POST["dia"]);
     }
 
     if (empty($_POST["hora"])) {
         $horaErr = "Hora is required";
+        $validFormVacios = false;
     } else {
         $hora = test_input($_POST["hora"]);
     }
 
     if (empty($_POST["tipus"])) {
         $tipusErr = "Tipus no valid";
+        $validFormVacios = false;
     } else {
         $tipus = test_input($_POST["tipus"]);
     }
 
     if (empty($_POST["usuari"])) {
         $usuariErr = "Usuari no valid";
+        $validFormVacios = false;
     } else {
         $usuari = test_input($_POST["usuari"]);
     }
@@ -44,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
     $result->free();
-    if ($validForm) {
+    if ($validForm && $validFormVacios) {
         // prepare and bind
         $stmt = $conn->prepare("INSERT INTO reserves (data, idpista, idclient) VALUES (?, ?, ?)");
         $stmt->bind_param("sss", $dataCompleta, $tipus, $usuari);
@@ -139,6 +144,12 @@ function join_date_and_time($date, $time)
         ?>
             <div class="alert alert-danger" role="alert">
                 Ya existe una reserva para ese dia y hora
+            </div>
+        <?php
+        } else if (!$validFormVacios) {
+        ?>
+            <div class="alert alert-danger" role="alert">
+                Uno o más campos están vacíos
             </div>
         <?php
         }
