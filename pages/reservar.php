@@ -79,6 +79,7 @@ function join_date_and_time($date, $time)
 <!-- Page -->
 <div class="row">
     <div class="col-sm-4">
+        <h5><b>Tenir en conta que no es pot reservar els dissabtes y diumenges.</b></h5>
         <form name="reserva" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
             <h2> Reserva pista</h2>
             <p>
@@ -87,7 +88,7 @@ function join_date_and_time($date, $time)
                 <span class="error">* <?php echo $diaErr; ?></span>
                 <br /><br />
                 <label for="hora">Hora:</label>
-                <input type="time" id="hora" name="hora" min="00:00" max="23:59" value="<?php echo $hora; ?>">
+                <input type="time" id="hora" name="hora" min="15:00" max="20:59" value="<?php echo $hora; ?>">
                 <span class="error">* <?php echo $horaErr; ?></span>
             </p>
 

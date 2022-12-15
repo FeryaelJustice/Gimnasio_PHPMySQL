@@ -3,16 +3,8 @@
 // Start session
 session_start();
 // Session variables
-// Veure reserves
-$_SESSION["dateFrom"] = "2022-11-22 00:00:00";
-$_SESSION["dateTo"] = "2022-11-26 23:59:59";
-
-// COOKIES
-// Veure reserves
-$dateFromCookie = "dateFrom"; // Name identifier
-setcookie($dateFromCookie, "2022-11-22 00:00:00", time() + (86400 * 30), "/"); // Expiration: 86400 = 1 day * 30 = 1 month
-$dateToCookie = "dateTo"; // Name identifier
-setcookie($dateToCookie, "2022-11-26 23:59:59", time() + (86400 * 30), "/"); // Expiration 86400 = 1 day * 30 = 1 month
+$_SESSION["dateFrom"] = gmdate("Y-m-d\TH:i:s\Z", strtotime("2022-11-22 00:00:00"));
+$_SESSION["dateTo"] = gmdate("Y-m-d\TH:i:s\Z", strtotime("2022-11-26 23:59:59"));
 
 // NAVIGATION
 // Defined allowed pages (bona practica)
