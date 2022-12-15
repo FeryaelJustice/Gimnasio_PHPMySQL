@@ -10,7 +10,7 @@ if (isset($_GET['id'])) {
         $stmt->bind_param("s", $id);
         $stmt->execute();
     } catch (Exception $e) {
-        echo "Commit transaction reserves failed";
+        echo "Delete transaction reserves failed";
         die();
     } finally {
         $stmt->close();
@@ -21,7 +21,7 @@ if (isset($_GET['id'])) {
         $stmt->bind_param("s", $id);
         $stmt->execute();
     } catch (Exception $e) {
-        echo "Commit transaction clients failed";
+        echo "Delete transaction clients failed";
         die();
     } finally {
         $stmt->close();

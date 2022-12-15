@@ -136,7 +136,6 @@ function join_date_and_time($date, $time)
             </p>
             <div style="text-align: center">
                 <input type="submit" value="Enviar" name="enviar" style="margin-right: 5px; width: 60px; height:30px; font-weight: bold">
-                <input type="reset" value="Limpiar" style="width: 60px; height:30px; font-weight: bold">
             </div>
         </form>
         <?php

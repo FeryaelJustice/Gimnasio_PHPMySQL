@@ -4,7 +4,7 @@ require __DIR__ . '../../../../partials/header.php';
 
 ?>
 
-<form name="newuser" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>/pages/actions/usuari/crea_usuari.php" method="POST">
+<form name="newuser" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
     <label for="name">Nom:</label>
     <input type="text" name="name" id="name">
     <label for="surname">Llinatges:</label>
@@ -27,12 +27,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bind_param("sss", $_POST["name"], $_POST["surname"], $_POST["phone"]);
             $stmt->execute();
         } catch (Exception $e) {
-            echo "Commit transaction failed";
+            echo "Create transaction failed";
             die();
         } finally {
             $stmt->close();
         }
-    
+
         $_SESSION['message'] = 'Task Added Successfully';
         $_SESSION['message_type'] = 'warn';
         header('Location: /projects/tasku3dawes/index.php?page=usuaris');
