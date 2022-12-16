@@ -1,26 +1,38 @@
+    <?php
+    // Session variables para cambiar de semana
+    if (!isset($_SESSION["dateFrom"]) && !isset($_SESSION["dateTo"])) {
+        $_SESSION["dateFrom"] = gmdate("Y-m-d\TH:i:s\Z", strtotime("2022-11-22 00:00:00"));
+        $_SESSION["dateTo"] = gmdate("Y-m-d\TH:i:s\Z", strtotime("2022-11-26 23:59:59"));
+    }
+    // COOKIES para cambiar de semana
+    if (!isset($_COOKIE["dateFrom"]) && !isset($_COOKIE["dateTo"])) {
+        setcookie("dateFrom", gmdate("Y-m-d\TH:i:s\Z", strtotime("2022-11-22 00:00:00")), time() + 3600, "/");
+        setcookie("dateTo", gmdate("Y-m-d\TH:i:s\Z", strtotime("2022-11-26 23:59:59")), time() + 3600, "/");
+    }
+    ?>
     <div class="row">
         <div class="col-sm-8">
             <div class="alert alert-primary" role="alert">
                 <div class="row">
                     <div class="col-sm-2">
-                        <form name="downForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?page=reserves"; ?>">
+                        <form name="downForm" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?page=reserves"; ?>">
                             <input type="hidden" name="operation" value="down">
                             <button type="submit"><img src="./static/left.png" style="cursor:pointer"></button>
                         </form>
                     </div>
                     <div class="col-sm-8">
                         <h2> Reserves setmana <?php
-                                                $time = strtotime($_SESSION["dateFrom"]);
+                                                $time = strtotime($_COOKIE["dateFrom"]);
                                                 $day = date("d", $time);
                                                 $month = date("m", $time);
                                                 echo ($day . "/" . $month) ?> a <?php
-                                                                                $timeTo = strtotime($_SESSION["dateTo"]);
+                                                                                $timeTo = strtotime($_COOKIE["dateTo"]);
                                                                                 $dayTo = date("d", $timeTo);
                                                                                 $monthTo = date("m", $timeTo);
                                                                                 echo ($dayTo . "/" . $monthTo) ?></h2>
                     </div>
                     <div class="col-sm-2">
-                        <form name="upForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?page=reserves"; ?>">
+                        <form name="upForm" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?page=reserves"; ?>">
                             <input type="hidden" name="operation" value="up">
                             <button type="submit"><img src="./static/right.png" style="cursor:pointer"></button>
                         </form>
@@ -29,37 +41,43 @@
             </div>
             <div class="table-responsive">
                 <?php
-                $dateFrom = $_SESSION["dateFrom"];
-                $dateTo = $_SESSION["dateTo"];
-                if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    if ($_POST["operation"] == "up") {
-                        // echo $_SESSION["dateFrom"] . " - ";
-                        // echo $_SESSION["dateTo"] . " -------";
+                $dateFrom = $_COOKIE["dateFrom"];
+                $dateTo = $_COOKIE["dateTo"];
 
-                        // strtotime returns UNIT datetime, gmdate returns universal datetime from unix format
-                        $_SESSION["dateFrom"] = gmdate("Y-m-d\TH:i:s\Z", strtotime("+4 day", strtotime($_SESSION["dateFrom"])));
-                        $_SESSION["dateTo"] = gmdate("Y-m-d\TH:i:s\Z", strtotime("+4 day", strtotime($_SESSION["dateTo"])));
+                if (isset($_POST["operation"]) && $_POST["operation"] == "up") {
+                    $_COOKIE["dateFrom"] = gmdate("Y-m-d\TH:i:s\Z", strtotime("+4 day", strtotime($_COOKIE["dateFrom"])));
+                    $_COOKIE["dateTo"] = gmdate("Y-m-d\TH:i:s\Z", strtotime("+4 day", strtotime($_COOKIE["dateTo"])));
 
-                        //echo $_SESSION["dateFrom"] . " - ";
-                        // echo $_SESSION["dateTo"] . " / ";
+                    // strtotime returns UNIT datetime, gmdate returns universal datetime from unix format
+                    // $_SESSION["dateFrom"] = gmdate("Y-m-d\TH:i:s\Z", strtotime("+4 day", strtotime($_SESSION["dateFrom"])));
+                    // $_SESSION["dateTo"] = gmdate("Y-m-d\TH:i:s\Z", strtotime("+4 day", strtotime($_SESSION["dateTo"])));
 
-                        $dateFrom = $_SESSION["dateFrom"];
-                        $dateTo = $_SESSION["dateTo"];
-                    } else {
-                        $_SESSION["dateFrom"] = gmdate("Y-m-d\TH:i:s\Z", strtotime("-4 day", strtotime($_SESSION["dateFrom"])));
-                        $_SESSION["dateTo"] = gmdate("Y-m-d\TH:i:s\Z", strtotime("-4 day", strtotime($_SESSION["dateTo"])));
+                    $dateFrom = $_COOKIE["dateFrom"];
+                    $dateTo = $_COOKIE["dateTo"];
 
-                        $dateFrom = $_SESSION["dateFrom"];
-                        $dateTo = $_SESSION["dateTo"];
+
+                    header('Location: /projects/tasku3dawes/index.php?page=reserves');
+                } else if (isset($_POST["operation"]) && $_POST["operation"] == "down") {
+                    // $_SESSION["dateFrom"] = gmdate("Y-m-d\TH:i:s\Z", strtotime("-4 day", strtotime($_SESSION["dateFrom"])));
+                    // $_SESSION["dateTo"] = gmdate("Y-m-d\TH:i:s\Z", strtotime("-4 day", strtotime($_SESSION["dateTo"])));
+                    if (isset($_COOKIE["dateFrom"]) && isset($_COOKIE["dateTo"])) {
+                        $_COOKIE["dateFrom"] = gmdate("Y-m-d\TH:i:s\Z", strtotime("-4 day", strtotime($_COOKIE["dateFrom"])));
+                        $_COOKIE["dateTo"] = gmdate("Y-m-d\TH:i:s\Z", strtotime("-4 day", strtotime($_COOKIE["dateTo"])));
                     }
+
+                    $dateFrom = $_COOKIE["dateFrom"];
+                    $dateTo = $_COOKIE["dateTo"];
+
+
                     header('Location: /projects/tasku3dawes/index.php?page=reserves');
                 }
+
                 $sql = "SELECT * FROM reserves WHERE data BETWEEN '$dateFrom' AND '$dateTo'";
                 $result = $conn->query($sql);
 
                 if ($result->num_rows > 0) {
                 ?>
-                    <table id="userList" class="table table-bordered table-hover table-striped">
+                    <table id="reserves" class="table table-bordered table-hover table-striped">
                         <caption>Els dissabtes i diumenges no están disponibles.</caption>
                         <tr>
                             <th></th>
@@ -292,6 +310,9 @@
                 } else {
                     echo "0 results";
                 }
+                $result->free();
+                $resultField->free();
+                $resultDatosReserva->free();
                 ?>
 
                 <!-- EJEMPLO TIMETABLE -->

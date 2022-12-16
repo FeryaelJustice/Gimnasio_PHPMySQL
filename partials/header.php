@@ -2,9 +2,6 @@
 // SESSION
 // Start session
 session_start();
-// Session variables
-$_SESSION["dateFrom"] = gmdate("Y-m-d\TH:i:s\Z", strtotime("2022-11-22 00:00:00"));
-$_SESSION["dateTo"] = gmdate("Y-m-d\TH:i:s\Z", strtotime("2022-11-26 23:59:59"));
 
 // NAVIGATION
 // Defined allowed pages (bona practica)

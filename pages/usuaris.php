@@ -47,6 +47,7 @@
             } else {
                 echo "0 results";
             }
+            $result->free();
             ?>
         </div>
     </div>

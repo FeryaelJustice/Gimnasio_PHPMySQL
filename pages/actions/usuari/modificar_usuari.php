@@ -87,6 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "0 results";
             }
+            $result->free();
             ?>
         </div>
     </div>
