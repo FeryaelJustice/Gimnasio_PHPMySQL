@@ -37,7 +37,7 @@ $page = (isset($_GET['page'])) ? $_GET['page'] : 'reservar';
     <!-- NAVEGACIÓ -->
     <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/projects/tasku3dawes/index.php?page=reservar">Gimnàs</a>
+            <a class="navbar-brand" href="/projects/tasku3dawes/index.php?page=reservar"><strong>Gimnàs</strong></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>

@@ -79,7 +79,9 @@ function join_date_and_time($date, $time)
 <!-- Page -->
 <div class="row">
     <div class="col-sm-4">
-        <h5><b>Tenir en conta que no es pot reservar els dissabtes y diumenges.</b></h5>
+        <div class="alert alert-info" role="alert">
+            Tenir en compte que no es pot reservar els dissabtes y diumenges.
+        </div>
         <form name="reserva" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
             <h2> Reserva pista</h2>
             <p>
