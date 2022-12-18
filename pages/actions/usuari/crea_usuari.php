@@ -21,6 +21,7 @@ require __DIR__ . '../../../../partials/header.php';
     <input type="number" name="phone" id="phone">
     <br>
     <br>
+    <input type="hidden" name="id" value="">
     <input type="submit" value="Enviar">
     <input type="reset" value="Reset">
 </form>
@@ -38,15 +39,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt = $conn->prepare("INSERT INTO clients (nom, llinatges, telefon) VALUES (?, ?, ?)");
             $stmt->bind_param("sss", $_POST["name"], $_POST["surname"], $_POST["phone"]);
             $stmt->execute();
+            $_SESSION['message'] = 'User created successfully';
+            $_SESSION['message_type'] = 'success';
         } catch (Exception $e) {
             echo "Create transaction failed";
+            $_SESSION['message'] = 'User creation failed';
+            $_SESSION['message_type'] = 'error';
             die();
         } finally {
             $stmt->close();
         }
 
-        $_SESSION['message'] = 'Task Added Successfully';
-        $_SESSION['message_type'] = 'warn';
         header('Location: /projects/tasku3dawes/index.php?page=usuaris');
     }
 }

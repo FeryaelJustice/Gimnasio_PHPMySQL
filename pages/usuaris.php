@@ -1,5 +1,22 @@
 <div class="row">
     <div class="col-sm-8">
+        <?php
+        if (isset($_SESSION['message']) && $_SESSION['message'] != "") {
+            if (isset($_SESSION['message_type']) && $_SESSION['message_type'] == "success") {
+        ?>
+                <div class="alert alert-success" role="alert">
+                    <?= $_SESSION['message'] ?>
+                </div>
+            <?php
+            } else if (isset($_SESSION['message_type']) && $_SESSION['message_type'] == "error") {
+            ?>
+                <div class="alert alert-danger" role="alert">
+                    <?= $_SESSION['message'] ?>
+                </div>
+        <?php
+            }
+        }
+        ?>
         <div class="alert alert-primary" role="alert">
             <div class="row">
                 <div class="col-sm-9">

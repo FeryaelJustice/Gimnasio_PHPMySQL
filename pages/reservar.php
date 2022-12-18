@@ -42,8 +42,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         while ($valores = $result->fetch_assoc()) {
-            if (($valores["idpista"] == $_POST["tipus"]) && ($valores["idclient"] == $_POST["usuari"]) && ($valores["data"] == $dataCompleta)) {
+            if (($valores["idpista"] == $_POST["tipus"]) && ($valores["data"] == $dataCompleta)) {
                 $validForm = false;
+                $_SESSION['message'] = 'Reserva creation failed';
+                $_SESSION['message_type'] = 'error';
                 break;
             }
         }
@@ -51,10 +53,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result->free();
     if ($validForm && $validFormVacios) {
         // prepare and bind
-        $stmt = $conn->prepare("INSERT INTO reserves (data, idpista, idclient) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $dataCompleta, $tipus, $usuari);
-        $stmt->execute();
-        $stmt->close();
+        try {
+            $stmt = $conn->prepare("INSERT INTO reserves (data, idpista, idclient) VALUES (?, ?, ?)");
+            $stmt->bind_param("sss", $dataCompleta, $tipus, $usuari);
+            $stmt->execute();
+            $_SESSION['message'] = 'Reserva created successfully';
+            $_SESSION['message_type'] = 'success';
+        } catch (Exception $e) {
+            echo "crear reserva failed";
+            $_SESSION['message'] = 'Reserva creation failed';
+            $_SESSION['message_type'] = 'error';
+        } finally {
+            $stmt->close();
+        }
     }
 }
 
@@ -79,6 +90,23 @@ function join_date_and_time($date, $time)
 <!-- Page -->
 <div class="row">
     <div class="col-sm-4">
+        <?php
+        if (isset($_SESSION['message']) && $_SESSION['message'] != "") {
+            if (isset($_SESSION['message_type']) && $_SESSION['message_type'] == "success") {
+        ?>
+                <div class="alert alert-success" role="alert">
+                    <?= $_SESSION['message'] ?>
+                </div>
+            <?php
+            } else if (isset($_SESSION['message_type']) && $_SESSION['message_type'] == "error") {
+            ?>
+                <div class="alert alert-danger" role="alert">
+                    <?= $_SESSION['message'] ?>
+                </div>
+        <?php
+            }
+        }
+        ?>
         <div class="alert alert-info" role="alert">
             Tenir en compte que no es pot reservar els dissabtes y diumenges.
         </div>

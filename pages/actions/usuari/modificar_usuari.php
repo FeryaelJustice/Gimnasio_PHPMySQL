@@ -16,12 +16,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sqlUpdate = "UPDATE clients SET nom='$nom', llinatges='$llinatges', telefon='$telefon' WHERE idclient = $id";
     $result = $conn->query($sqlUpdate);
     if ($result) {
+        $_SESSION['message'] = 'User edited successfully';
+        $_SESSION['message_type'] = 'success';
 ?>
         <div class="alert alert-success" role="alert">
             Registro editado
         </div>
     <?php
     } else {
+        $_SESSION['message'] = 'User edit failed';
+        $_SESSION['message_type'] = 'error';
     ?>
         <div class="alert alert-danger" role="alert">
             Fallo al editar registro
