@@ -98,69 +98,232 @@ if (!isset($_COOKIE["dateFrom"]) && !isset($_COOKIE["dateTo"])) {
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- 15h -->
-                        <tr>
-                            <td>15:00</td>
-                            <?php
+                        <!-- FORMA INCORRECTA PERO A MIG FUNCIONAR (la forma correcta de hacerlo pero que aun no conseguí que funcione está en deprecated/ -->
+                        <?php
+                        // output data of each row
 
-                            while ($row = $result->fetch_assoc()) {
-                                // echo "<td>a</td>";
-                                // echo "<td>a</td>";
-                                if (date('H', strtotime($row["data"])) == "15") {
-                                    foreach ($diesSetmana as $dia) {
-                                        // Dia y hora en concreto
-                            ?>
-                                        <td>
-                                            <?php
-                                            // echo "dia(row:arraydia):" . date('l', strtotime($row["data"])) . ":" . $dia . "</td>";
-                                            // echo "<td>" . date('l', strtotime($row["data"])) . ":" . $dia . "</td>";
-                                            // echo 'dia: ' . date('l', strtotime($row["data"]));
-                                            $sqlField = "SELECT * FROM reserves WHERE data = '$row[data]'"; // en una fecha concreta tantas reservas
-                                            $resultField = $conn->query($sqlField);
-                                            // echo $resultField->num_rows;
-                                            if ($resultField->num_rows > 0) {
-                                                while ($rowField = $resultField->fetch_assoc()) {
-                                                    echo $rowField["idclient"] . " " . $rowField["idclient"] . ": " . $rowField["idpista"] . " | ";
-                                                    // Si no funciona bien quitar el break
-                                                    break;
+                        $diesSetmana = array("1", "2", "3", "4", "5");
+                        // $horesDisponibles = ["15:00", "16:00", "17:00", "18:00", "19:00", "20:00"];
+                        // $index = 0; // per el while i anar posant els dies de la setmana
+                        // echo "<tr><td>" . $horesDisponibles[$index] . "</td><td>" . $row["data"] . "</td><td>" . $row["idpista"] . "</td><td>" . $row["idclient"] . "</td></tr>";
+
+                        // 15:00
+                        echo "<tr>";
+                        echo "<td>15:00</td>";
+                        while ($row = $result->fetch_assoc()) {
+                            if (date('H', strtotime($row["data"])) == "15") { // Si el registro es hora 15
+                                foreach ($diesSetmana as $dia) { // Recorremos lunes a viernes
+                                    if ($dia == date('N', strtotime($row["data"]))) { // 'N' es para dias de la semana (1 = dilluns, 7 = diumenge) Si el dia es igual al dia de la semana del registro
+                                        // Dia de la semana especifico con hora especifica (registros)
+                                        echo "<td>";
+                                        $sqlField = "SELECT * FROM reserves WHERE reserves.data = '$row[data]'"; // en una fecha concreta tantas reservas
+                                        $resultField = $conn->query($sqlField);
+                                        if ($resultField->num_rows > 0) {
+                                            while ($rowField = $resultField->fetch_assoc()) {
+                                                // obtener los datos de cada reserva
+                                                $sqlDatosReserva = "SELECT pistes.tipo, clients.nom, clients.llinatges FROM reserves INNER JOIN pistes ON pistes.idpista = '$rowField[idpista]' INNER JOIN clients ON clients.idclient = '$rowField[idclient]' WHERE reserves.data = '$rowField[data]'";
+                                                $resultDatosReserva = $conn->query($sqlDatosReserva);
+                                                if ($resultDatosReserva->num_rows > 0) {
+                                                    while ($rowDatosReserva = $resultDatosReserva->fetch_assoc()) {
+                                                        echo $rowDatosReserva["nom"] . " " . $rowDatosReserva["llinatges"] . ": " . $rowDatosReserva["tipo"] . " | ";
+                                                        // Si no funciona bien quitar el break
+                                                        break;
+                                                    }
                                                 }
                                             }
-                                            // $resultField->free();
-                                            ?>
-                                        </td>
-                            <?php
-                                        break;
+                                        }
+                                        echo "</td>";
+                                    } else {
+                                        echo "<td></td>";
                                     }
                                 }
+                                break;
                             }
-                            ?>
-                        </tr>
-                        <!-- 16h -->
-                        <tr>
-                            <td>16:00</td>
-                        </tr>
-                        <!-- 17h -->
-                        <tr>
-                            <td>17:00</td>
-                        </tr>
-                        <!-- 18h -->
-                        <tr>
-                            <td>18:00</td>
-                        </tr>
-                        <!-- 19h -->
-                        <tr>
-                            <td>19:00</td>
-                        </tr>
-                        <!-- 20h -->
-                        <tr>
-                            <td>20:00</td>
-                        </tr>
+                        }
+                        echo "</tr>";
+                        // 16:00
+                        echo "<tr>";
+                        echo "<td>16:00</td>";
+                        while ($row = $result->fetch_assoc()) {
+                            if (date('H', strtotime($row["data"])) == "16") {
+                                foreach ($diesSetmana as $dia) { // Recorremos lunes a viernes
+                                    if ($dia == date('N', strtotime($row["data"]))) { // 'N' es para dias de la semana (1 = dilluns, 7 = diumenge) Si el dia es igual al dia de la semana del registro
+                                        // Dia de la semana especifico con hora especifica (registros)
+                                        echo "<td>";
+                                        $sqlField = "SELECT * FROM reserves WHERE reserves.data = '$row[data]'"; // en una fecha concreta tantas reservas
+                                        $resultField = $conn->query($sqlField);
+                                        if ($resultField->num_rows > 0) {
+                                            while ($rowField = $resultField->fetch_assoc()) {
+                                                // obtener los datos de cada reserva
+                                                $sqlDatosReserva = "SELECT pistes.tipo, clients.nom, clients.llinatges FROM reserves INNER JOIN pistes ON pistes.idpista = '$rowField[idpista]' INNER JOIN clients ON clients.idclient = '$rowField[idclient]' WHERE reserves.data = '$rowField[data]'";
+                                                $resultDatosReserva = $conn->query($sqlDatosReserva);
+                                                if ($resultDatosReserva->num_rows > 0) {
+                                                    while ($rowDatosReserva = $resultDatosReserva->fetch_assoc()) {
+                                                        echo $rowDatosReserva["nom"] . " " . $rowDatosReserva["llinatges"] . ": " . $rowDatosReserva["tipo"] . " | ";
+                                                        // Si no funciona bien quitar el break
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        echo "</td>";
+                                    } else {
+                                        echo "<td></td>";
+                                    }
+                                }
+                                break;
+                                break;
+                            }
+                        }
+                        echo "</tr>";
+                        // 17:00
+                        echo "<tr>";
+                        echo "<td>17:00</td>";
+                        while ($row = $result->fetch_assoc()) {
+                            if (date('H', strtotime($row["data"])) == "17") {
+                                foreach ($diesSetmana as $dia) { // Recorremos lunes a viernes
+                                    if ($dia == date('N', strtotime($row["data"]))) { // 'N' es para dias de la semana (1 = dilluns, 7 = diumenge) Si el dia es igual al dia de la semana del registro
+                                        // Dia de la semana especifico con hora especifica (registros)
+                                        echo "<td>";
+                                        $sqlField = "SELECT * FROM reserves WHERE reserves.data = '$row[data]'"; // en una fecha concreta tantas reservas
+                                        $resultField = $conn->query($sqlField);
+                                        if ($resultField->num_rows > 0) {
+                                            while ($rowField = $resultField->fetch_assoc()) {
+                                                // obtener los datos de cada reserva
+                                                $sqlDatosReserva = "SELECT pistes.tipo, clients.nom, clients.llinatges FROM reserves INNER JOIN pistes ON pistes.idpista = '$rowField[idpista]' INNER JOIN clients ON clients.idclient = '$rowField[idclient]' WHERE reserves.data = '$rowField[data]'";
+                                                $resultDatosReserva = $conn->query($sqlDatosReserva);
+                                                if ($resultDatosReserva->num_rows > 0) {
+                                                    while ($rowDatosReserva = $resultDatosReserva->fetch_assoc()) {
+                                                        echo $rowDatosReserva["nom"] . " " . $rowDatosReserva["llinatges"] . ": " . $rowDatosReserva["tipo"] . " | ";
+                                                        // Si no funciona bien quitar el break
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        echo "</td>";
+                                    } else {
+                                        echo "<td></td>";
+                                    }
+                                }
+                                break;
+                                break;
+                            }
+                        }
+                        echo "</tr>";
+                        // 18:00
+                        echo "<tr>";
+                        echo "<td>18:00</td>";
+                        while ($row = $result->fetch_assoc()) {
+                            if (date('H', strtotime($row["data"])) == "18") {
+                                foreach ($diesSetmana as $dia) { // Recorremos lunes a viernes
+                                    if ($dia == date('N', strtotime($row["data"]))) { // 'N' es para dias de la semana (1 = dilluns, 7 = diumenge) Si el dia es igual al dia de la semana del registro
+                                        // Dia de la semana especifico con hora especifica (registros)
+                                        echo "<td>";
+                                        $sqlField = "SELECT * FROM reserves WHERE reserves.data = '$row[data]'"; // en una fecha concreta tantas reservas
+                                        $resultField = $conn->query($sqlField);
+                                        if ($resultField->num_rows > 0) {
+                                            while ($rowField = $resultField->fetch_assoc()) {
+                                                // obtener los datos de cada reserva
+                                                $sqlDatosReserva = "SELECT pistes.tipo, clients.nom, clients.llinatges FROM reserves INNER JOIN pistes ON pistes.idpista = '$rowField[idpista]' INNER JOIN clients ON clients.idclient = '$rowField[idclient]' WHERE reserves.data = '$rowField[data]'";
+                                                $resultDatosReserva = $conn->query($sqlDatosReserva);
+                                                if ($resultDatosReserva->num_rows > 0) {
+                                                    while ($rowDatosReserva = $resultDatosReserva->fetch_assoc()) {
+                                                        echo $rowDatosReserva["nom"] . " " . $rowDatosReserva["llinatges"] . ": " . $rowDatosReserva["tipo"] . " | ";
+                                                        // Si no funciona bien quitar el break
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        echo "</td>";
+                                    } else {
+                                        echo "<td></td>";
+                                    }
+                                }
+                                break;
+                                break;
+                            }
+                        }
+                        echo "</tr>";
+                        // 19:00
+                        echo "<tr>";
+                        echo "<td>19:00</td>";
+                        while ($row = $result->fetch_assoc()) {
+                            if (date('H', strtotime($row["data"])) == "19") {
+                                foreach ($diesSetmana as $dia) { // Recorremos lunes a viernes
+                                    if ($dia == date('N', strtotime($row["data"]))) { // 'N' es para dias de la semana (1 = dilluns, 7 = diumenge) Si el dia es igual al dia de la semana del registro
+                                        // Dia de la semana especifico con hora especifica (registros)
+                                        echo "<td>";
+                                        $sqlField = "SELECT * FROM reserves WHERE reserves.data = '$row[data]'"; // en una fecha concreta tantas reservas
+                                        $resultField = $conn->query($sqlField);
+                                        if ($resultField->num_rows > 0) {
+                                            while ($rowField = $resultField->fetch_assoc()) {
+                                                // obtener los datos de cada reserva
+                                                $sqlDatosReserva = "SELECT pistes.tipo, clients.nom, clients.llinatges FROM reserves INNER JOIN pistes ON pistes.idpista = '$rowField[idpista]' INNER JOIN clients ON clients.idclient = '$rowField[idclient]' WHERE reserves.data = '$rowField[data]'";
+                                                $resultDatosReserva = $conn->query($sqlDatosReserva);
+                                                if ($resultDatosReserva->num_rows > 0) {
+                                                    while ($rowDatosReserva = $resultDatosReserva->fetch_assoc()) {
+                                                        echo $rowDatosReserva["nom"] . " " . $rowDatosReserva["llinatges"] . ": " . $rowDatosReserva["tipo"] . " | ";
+                                                        // Si no funciona bien quitar el break
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        echo "</td>";
+                                    } else {
+                                        echo "<td></td>";
+                                    }
+                                }
+                                break;
+                                break;
+                            }
+                        }
+                        echo "</tr>";
+                        // 20:00
+                        echo "<tr>";
+                        echo "<td>20:00</td>";
+                        while ($row = $result->fetch_assoc()) {
+                            if (date('H', strtotime($row["data"])) == "20") {
+                                foreach ($diesSetmana as $dia) { // Recorremos lunes a viernes
+                                    if ($dia == date('N', strtotime($row["data"]))) { // 'N' es para dias de la semana (1 = dilluns, 7 = diumenge) Si el dia es igual al dia de la semana del registro
+                                        // Dia de la semana especifico con hora especifica (registros)
+                                        echo "<td>";
+                                        $sqlField = "SELECT * FROM reserves WHERE reserves.data = '$row[data]'"; // en una fecha concreta tantas reservas
+                                        $resultField = $conn->query($sqlField);
+                                        if ($resultField->num_rows > 0) {
+                                            while ($rowField = $resultField->fetch_assoc()) {
+                                                // obtener los datos de cada reserva
+                                                $sqlDatosReserva = "SELECT pistes.tipo, clients.nom, clients.llinatges FROM reserves INNER JOIN pistes ON pistes.idpista = '$rowField[idpista]' INNER JOIN clients ON clients.idclient = '$rowField[idclient]' WHERE reserves.data = '$rowField[data]'";
+                                                $resultDatosReserva = $conn->query($sqlDatosReserva);
+                                                if ($resultDatosReserva->num_rows > 0) {
+                                                    while ($rowDatosReserva = $resultDatosReserva->fetch_assoc()) {
+                                                        echo $rowDatosReserva["nom"] . " " . $rowDatosReserva["llinatges"] . ": " . $rowDatosReserva["tipo"] . " | ";
+                                                        // Si no funciona bien quitar el break
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        echo "</td>";
+                                    } else {
+                                        echo "<td></td>";
+                                    }
+                                }
+                                break;
+                                break;
+                            }
+                        }
+                        echo "</tr>";
+                        ?>
+                        <!-- END FORMA INCORRECTA PERO A MIG FUNCIONAR -->
                     </tbody>
                 </table>
             </div>
         <?php
-            $result->free();
         }
+        $result->free();
         ?>
     </div>
 </div>
