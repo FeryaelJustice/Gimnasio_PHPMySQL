@@ -15,7 +15,7 @@ if (!isset($_COOKIE["dateFrom"]) && !isset($_COOKIE["dateTo"])) {
 
             /*
             if (empty($_GET['status'])) {
-                header('/projects/tasku3dawes/index.php?page=reserves&status=1');
+                header('/projects/tasku3dawes/./index.php?page=reserves&status=1');
             }
             */
         } else if ($_POST["operation"] == "down") {
@@ -24,7 +24,7 @@ if (!isset($_COOKIE["dateFrom"]) && !isset($_COOKIE["dateTo"])) {
 
             /*
             if (empty($_GET['status'])) {
-                header('/projects/tasku3dawes/index.php?page=reserves&status=1');
+                header('/projects/tasku3dawes/./index.php?page=reserves&status=1');
             }
             */
         }

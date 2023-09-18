@@ -50,6 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->close();
         }
 
-        header('Location: /projects/tasku3dawes/index.php?page=usuaris');
+        header('Location: ../../../index.php?page=usuaris');
     }
 }

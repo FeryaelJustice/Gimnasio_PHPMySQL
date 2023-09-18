@@ -11,6 +11,7 @@ define("allowed", [
     "usuaris"
 ]);
 $page = (isset($_GET['page'])) ? $_GET['page'] : 'reservar';
+$hostname = "localhost"; // domain if is in production
 ?>
 
 <!-- HEADER -->
@@ -34,16 +35,43 @@ $page = (isset($_GET['page'])) ? $_GET['page'] : 'reservar';
     <!-- NAVEGACIÓ -->
     <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/projects/tasku3dawes/index.php?page=reservar"><strong>Gimnàs</strong></a>
+            <a class="navbar-brand" href="./index.php?page=reservar"><strong>Gimnàs</strong></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <!-- <a class="nav-link disabled">Home</a> -->
-                    <a class="nav-link<?php echo ($page == "reservar" ? " active\" aria-current=\"page" : "")?>" href="/projects/tasku3dawes/index.php?page=reservar">Reservar pista</a>
-                    <a class="nav-link<?php echo ($page == "reserves" ? " active\" aria-current=\"page" : "")?>" href="/projects/tasku3dawes/index.php?page=reserves">Veure reserves</a>
-                    <a class="nav-link<?php echo ($page == "usuaris" ? " active\"aria-current=\"page" : "")?>" href="/projects/tasku3dawes/index.php?page=usuaris">Usuaris</a>
+                    <?php
+                    //$current_dir = str_replace("partials","",str_replace("C:/xampp/htdocs/",$hostname . "/",str_replace("\\","/",dirname(__FILE__))));
+                    //echo $current_dir;
+
+                    $links = [
+                        "reservar" => "index.php?page=reservar",
+                        "reserves" => "index.php?page=reserves",
+                        "usuaris" => "index.php?page=usuaris"
+                    ];
+
+                    $currentFileName = $_SERVER['SCRIPT_NAME'];
+                    if (end(explode("/", $currentFileName)) != "index.php") {
+                        $links = [
+                            "reservar" => "../../../index.php?page=reservar",
+                            "reserves" => "../../../index.php?page=reserves",
+                            "usuaris" => "../../../index.php?page=usuaris"
+                        ];
+                    }
+
+                    /*
+                    $links = [
+                        "reservar" => $current_dir . "index.php?page=reservar",
+                        "reserves" => $current_dir . "index.php?page=reserves",
+                        "usuaris" => $current_dir . "index.php?page=usuaris"
+                    ];
+                    */
+
+                    ?>
+                    <a class="nav-link<?php echo ($page == "reservar" ? " active\" aria-current=\"page" : "") ?>" href="<?= $links["reservar"] ?>">Reservar pista</a>
+                    <a class="nav-link<?php echo ($page == "reserves" ? " active\" aria-current=\"page" : "") ?>" href="<?= $links["reserves"] ?>">Veure reserves</a>
+                    <a class="nav-link<?php echo ($page == "usuaris" ? " active\"aria-current=\"page" : "") ?>" href="<?= $links["usuaris"] ?>">Usuaris</a>
                 </div>
             </div>
         </div>
