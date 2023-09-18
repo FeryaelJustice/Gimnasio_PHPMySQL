@@ -35,32 +35,30 @@ $hostname = "localhost"; // domain if is in production
     <!-- NAVEGACIÓ -->
     <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="./index.php?page=reservar"><strong>Gimnàs</strong></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <?php
-                    //$current_dir = str_replace("partials","",str_replace("C:/xampp/htdocs/",$hostname . "/",str_replace("\\","/",dirname(__FILE__))));
-                    //echo $current_dir;
 
-                    $links = [
-                        "reservar" => "index.php?page=reservar",
-                        "reserves" => "index.php?page=reserves",
-                        "usuaris" => "index.php?page=usuaris"
-                    ];
+            <?php
+            //$current_dir = str_replace("partials","",str_replace("C:/xampp/htdocs/",$hostname . "/",str_replace("\\","/",dirname(__FILE__))));
+            //echo $current_dir;
 
-                    $currentFileName = $_SERVER['SCRIPT_NAME'];
-                    if (end(explode("/", $currentFileName)) != "index.php") {
-                        $links = [
-                            "reservar" => "../../../index.php?page=reservar",
-                            "reserves" => "../../../index.php?page=reserves",
-                            "usuaris" => "../../../index.php?page=usuaris"
-                        ];
-                    }
+            $links = [
+                "home" => "index.php?page=reservar",
+                "reservar" => "index.php?page=reservar",
+                "reserves" => "index.php?page=reserves",
+                "usuaris" => "index.php?page=usuaris"
+            ];
 
-                    /*
+            $currentFileName = $_SERVER['SCRIPT_NAME'];
+            $currentFileNameArray = explode("/", $currentFileName);
+            if (end($currentFileNameArray) != "index.php") {
+                $links = [
+                    "home" => "../../../index.php?page=reservar",
+                    "reservar" => "../../../index.php?page=reservar",
+                    "reserves" => "../../../index.php?page=reserves",
+                    "usuaris" => "../../../index.php?page=usuaris"
+                ];
+            }
+
+            /*
                     $links = [
                         "reservar" => $current_dir . "index.php?page=reservar",
                         "reserves" => $current_dir . "index.php?page=reserves",
@@ -68,7 +66,14 @@ $hostname = "localhost"; // domain if is in production
                     ];
                     */
 
-                    ?>
+            ?>
+
+            <a class="navbar-brand" href="<?=$links["home"]?>"><strong>Gimnàs</strong></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
                     <a class="nav-link<?php echo ($page == "reservar" ? " active\" aria-current=\"page" : "") ?>" href="<?= $links["reservar"] ?>">Reservar pista</a>
                     <a class="nav-link<?php echo ($page == "reserves" ? " active\" aria-current=\"page" : "") ?>" href="<?= $links["reserves"] ?>">Veure reserves</a>
                     <a class="nav-link<?php echo ($page == "usuaris" ? " active\"aria-current=\"page" : "") ?>" href="<?= $links["usuaris"] ?>">Usuaris</a>
